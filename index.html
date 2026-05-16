@@ -551,11 +551,11 @@ h2.section-title .it{font-style:italic;font-weight:400;color:var(--accent)}
   font-size:28px;font-weight:700;letter-spacing:-.02em;
   margin-bottom:10px;
 }
-.flow-node:nth-child(1) .nm{color:var(--accent)}
-.flow-node:nth-child(2) .nm{color:var(--accent-2)}
-.flow-node:nth-child(3) .nm{color:var(--accent-3)}
-.flow-node:nth-child(4) .nm{color:var(--accent-4)}
-.flow-node .desc{font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+.flow-node:nth-child(1) .nm{color:#ff8a4d}
+.flow-node:nth-child(2) .nm{color:#ffd76a}
+.flow-node:nth-child(3) .nm{color:#b8a3ff}
+.flow-node:nth-child(4) .nm{color:#7ce6f5}
+.flow-node .desc{font-size:14px;color:#d8d8e0;line-height:1.55}
 
 /* Formula equation */
 .formula{
@@ -1095,10 +1095,11 @@ gsap.to('.hero h1', {
 });
 
 /* ===== Flow nodes stagger on scroll ===== */
-gsap.from('.flow-node',{
-  opacity:0,y:40,duration:.7,stagger:.12,ease:'power2.out',
-  scrollTrigger:{trigger:'.flow-chain',start:'top 78%'}
-});
+gsap.fromTo('.flow-node',
+  {opacity:0,y:40},
+  {opacity:1,y:0,duration:.7,stagger:.12,ease:'power2.out',
+   scrollTrigger:{trigger:'.flow-chain',start:'top 95%',toggleActions:'play none none none'}}
+);
 
 /* ===== Mech rail stagger (uses fromTo so already-passed triggers still resolve) ===== */
 gsap.fromTo('.mech-step',
