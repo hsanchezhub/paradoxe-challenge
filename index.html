@@ -555,6 +555,45 @@ h2.section-title .it{font-style:italic;font-weight:400;color:var(--accent)}
 .flow-node:nth-child(4) .nm{color:var(--accent-4)}
 .flow-node .desc{font-size:13.5px;color:var(--ink-soft);line-height:1.5}
 
+/* Formula equation */
+.formula{
+  display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;
+  padding:42px 30px;margin:0 0 50px;
+  border:1px solid var(--line-strong);border-radius:18px;
+  background:
+    radial-gradient(ellipse at center, rgba(124,92,255,.10), transparent 70%),
+    linear-gradient(180deg,rgba(255,255,255,.02),rgba(0,0,0,.35));
+  position:relative;overflow:hidden;
+}
+.formula::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent-3),transparent);
+}
+.f-term{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:10px 18px;min-width:120px;
+}
+.f-num{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(34px,4.5vw,60px);font-weight:700;line-height:1;letter-spacing:-.03em;
+}
+.f-term:nth-child(1) .f-num{color:var(--accent)}
+.f-term:nth-child(3) .f-num{color:var(--accent-2)}
+.f-term:nth-child(5) .f-num{color:var(--accent-3)}
+.f-result .f-num{
+  background:linear-gradient(135deg,var(--accent-3),var(--accent-4));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.f-lbl{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-soft);
+}
+.f-op{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(28px,3.5vw,42px);font-weight:300;color:var(--ink-dim);
+}
+.f-eq{color:var(--accent-3);font-weight:500}
+
 /* Waveform vibration visual */
 .wave-strip{
   height:80px;width:100%;margin:30px 0;
@@ -643,11 +682,10 @@ h2.section-title .it{font-style:italic;font-weight:400;color:var(--accent)}
 <div class="backdrop"></div>
 <div class="noise"></div>
 <div class="grid-overlay"></div>
-<div class="scan"></div>
 
 <!-- ============ NAV ============ -->
 <nav class="topbar">
-  <div class="brand"><span class="dot"></span> KRAVE / FORMATION</div>
+  <div class="brand"><span class="dot"></span> HUGO SANCHEZ PRODUCTION</div>
   <div class="nav-meta">
     <span>MODULE <b>02</b></span>
     <span>DURATION <b>~25 MIN</b></span>
@@ -744,56 +782,39 @@ h2.section-title .it{font-style:italic;font-weight:400;color:var(--accent)}
   </div>
 
   <!-- Mécanisme rail -->
-  <div class="reveal" style="margin-top:80px">
+  <div style="margin-top:80px">
     <div class="section-num">01.B · Mécanisme</div>
-    <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,3.4vw,46px);font-weight:600;letter-spacing:-.02em;margin-bottom:8px">
-      Pourquoi ça marche — la chaîne.
+    <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,3.4vw,46px);font-weight:600;letter-spacing:-.02em;margin-bottom:14px">
+      Pourquoi ça marche — <span style="color:var(--accent);font-style:italic">la chaîne neurologique.</span>
     </h3>
-    <p style="color:var(--ink-soft);max-width:680px;margin-bottom:30px">
-      Ce qu'il se passe vraiment dans le cerveau quand tu actives une carotte court-terme.
+    <p style="color:var(--ink-soft);max-width:760px;margin-bottom:36px;font-size:16px">
+      Ce qu'il se passe <b style="color:var(--ink)">vraiment</b> dans le cerveau quand tu actives une carotte court-terme.
+      Quatre maillons. Toujours dans cet ordre. Casse-en un — toute la chaîne tombe.
     </p>
     <div class="mech-rail">
       <div class="mech-step">
-        <div class="step-no">STEP 01</div>
+        <div class="step-no">STEP 01 · INPUT</div>
         <div class="step-tit"><span class="em">Stimulus.</span></div>
-        <div class="step-txt">Tu poses le prix. Tu poses la deadline. Tu rends la cible visible et touchable.</div>
+        <div class="step-txt">Tu poses le prix. Tu poses la deadline. Tu rends la cible <b style="color:var(--ink)">visible, touchable, datée</b>. Le cerveau enregistre une cible concrète — pas une intention.</div>
         <div class="step-arrow"></div>
       </div>
       <div class="mech-step">
-        <div class="step-no">STEP 02</div>
+        <div class="step-no">STEP 02 · CHIMIE</div>
         <div class="step-tit"><span class="em">Dopamine.</span></div>
-        <div class="step-txt">Le cerveau anticipe la récompense. Le système nerveux se met en mode "chasse".</div>
+        <div class="step-txt">Le cerveau libère de la dopamine <b style="color:var(--ink)">en anticipation</b> — pas à la victoire, mais à l'idée de la victoire. Le système nerveux passe en mode <i>chasse</i>.</div>
         <div class="step-arrow"></div>
       </div>
       <div class="mech-step">
-        <div class="step-no">STEP 03</div>
+        <div class="step-no">STEP 03 · ÉTAT</div>
         <div class="step-tit"><span class="em">Focus.</span></div>
-        <div class="step-txt">Le bruit autour disparaît. Toute l'énergie converge vers une seule cible mesurable.</div>
+        <div class="step-txt">Tunnel vision. Le bruit, les distractions, les excuses s'effacent. Toute l'énergie disponible converge vers <b style="color:var(--ink)">une seule cible mesurable</b>.</div>
         <div class="step-arrow"></div>
       </div>
       <div class="mech-step">
-        <div class="step-no">STEP 04</div>
+        <div class="step-no">STEP 04 · OUTPUT</div>
         <div class="step-tit"><span class="em">Performance.</span></div>
-        <div class="step-txt">L'individu fait en 5 jours ce qu'il n'aurait pas fait en 5 semaines. Sans la carotte, ce delta n'existe pas.</div>
+        <div class="step-txt">L'individu fait en <b style="color:var(--ink)">5 jours</b> ce qu'il n'aurait pas fait en 5 semaines. Sans la carotte, ce delta de performance n'existe pas. C'est un état artificiel — mais réel.</div>
       </div>
-    </div>
-  </div>
-
-  <!-- Edge -->
-  <div class="edge-block reveal">
-    <div>
-      <div class="edge-label">L'EDGE À UTILISER</div>
-      <div class="edge-title">Le challenge<br><span class="it">est un outil.</span></div>
-      <p style="color:var(--ink-soft);font-size:15.5px">
-        Ce n'est pas une question de fierté. C'est un protocole pour activer un état que personne ne peut tenir longtemps — mais que tout le monde peut tenir le temps d'un sprint.
-      </p>
-    </div>
-    <div class="edge-points">
-      <div class="edge-pt">Fais en <b>fenêtre courte</b> — 7 jours, 14 jours, jamais 90.</div>
-      <div class="edge-pt">Rends la <b>carotte visible</b> — image, photo, montant, scène.</div>
-      <div class="edge-pt">Crée la <b>rareté</b> — un gagnant, pas dix.</div>
-      <div class="edge-pt">Communique <b>chaque jour</b> les positions. Le classement nourrit la dopamine.</div>
-      <div class="edge-pt">Tu ne cherches pas l'effort moyen — tu cherches <b>le pic.</b></div>
     </div>
   </div>
 
@@ -870,14 +891,26 @@ h2.section-title .it{font-style:italic;font-weight:400;color:var(--accent)}
   </div>
 
   <!-- Flow chain -->
-  <div class="reveal" style="margin-top:60px">
+  <div style="margin-top:60px">
     <div class="section-num">02.B · Loi du Mouvement</div>
-    <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,3.4vw,46px);font-weight:600;letter-spacing:-.02em;margin-bottom:8px">
+    <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,3.4vw,46px);font-weight:600;letter-spacing:-.02em;margin-bottom:14px">
       La séquence sacrée.
     </h3>
-    <p style="color:var(--ink-soft);max-width:680px;margin-bottom:36px">
+    <p style="color:var(--ink-soft);max-width:760px;margin-bottom:36px;font-size:16px">
       Le principe qui te sort d'une bouteille vide à chaque fois. Toujours dans cet ordre — jamais dans un autre.
+      <b style="color:var(--ink)">L'inspiration n'est pas un préalable. C'est une conséquence.</b>
     </p>
+
+    <!-- Formule visuelle -->
+    <div class="formula">
+      <div class="f-term"><span class="f-num">01</span><span class="f-lbl">Action</span></div>
+      <div class="f-op">×</div>
+      <div class="f-term"><span class="f-num">02</span><span class="f-lbl">Rythme</span></div>
+      <div class="f-op">×</div>
+      <div class="f-term"><span class="f-num">03</span><span class="f-lbl">Vibration</span></div>
+      <div class="f-op f-eq">=</div>
+      <div class="f-term f-result"><span class="f-num">∞</span><span class="f-lbl">Résultat</span></div>
+    </div>
 
     <div class="flow-chain">
       <div class="flow-node">
@@ -975,7 +1008,7 @@ h2.section-title .it{font-style:italic;font-weight:400;color:var(--accent)}
 </section>
 
 <div class="bottom-rail">
-  <span>KRAVE / FORMATION · MODULE 02</span>
+  <span>HUGO SANCHEZ PRODUCTION · MODULE 02</span>
   <span>LE PARADOXE DU CHALLENGE</span>
   <span>END · 02 / 02</span>
 </div>
