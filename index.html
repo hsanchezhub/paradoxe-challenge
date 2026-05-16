@@ -285,6 +285,8 @@ h2.section-title .it{font-style:italic;font-weight:400;color:var(--accent)}
   position:absolute;left:0;
   font-size:46px;
   filter:drop-shadow(0 0 24px rgba(255,91,31,.6));
+  transform:scaleX(-1);
+  display:inline-block;
 }
 .carrot{
   position:absolute;right:8%;
@@ -577,17 +579,19 @@ h2.section-title .it{font-style:italic;font-weight:400;color:var(--accent)}
   font-family:'Space Grotesk',sans-serif;
   font-size:clamp(34px,4.5vw,60px);font-weight:700;line-height:1;letter-spacing:-.03em;
 }
-.f-term:nth-child(1) .f-num{color:var(--accent)}
-.f-term:nth-child(3) .f-num{color:var(--accent-2)}
-.f-term:nth-child(5) .f-num{color:var(--accent-3)}
+.f-term:nth-child(1) .f-num{color:#ff8a4d}
+.f-term:nth-child(3) .f-num{color:#ffd76a}
+.f-term:nth-child(5) .f-num{color:#b8a3ff}
 .f-result .f-num{
-  background:linear-gradient(135deg,var(--accent-3),var(--accent-4));
+  background:linear-gradient(135deg,#b8a3ff,#7ce6f5);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
 }
 .f-lbl{
   font-family:'JetBrains Mono',monospace;
-  font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-soft);
+  font-size:12px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:#e8e8ef;
 }
+.f-term:nth-child(3) .f-lbl{color:#ffe28a}
+.f-term:nth-child(5) .f-lbl{color:#d6c9ff}
 .f-op{
   font-family:'Space Grotesk',sans-serif;
   font-size:clamp(28px,3.5vw,42px);font-weight:300;color:var(--ink-dim);
