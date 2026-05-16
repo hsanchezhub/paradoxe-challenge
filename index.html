@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Le Paradoxe du Challenge — Formation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+:root{
+  --bg:#06060a;
+  --bg-2:#0b0b12;
+  --ink:#f5f5f7;
+  --ink-soft:#a8a8b3;
+  --ink-dim:#5a5a66;
+  --accent:#ff5b1f;        /* orange agressif */
+  --accent-2:#ffb12c;       /* ambre */
+  --accent-3:#7c5cff;       /* violet */
+  --accent-4:#22d3ee;       /* cyan tech */
+  --danger:#ff2a55;
+  --line:rgba(255,255,255,.08);
+  --line-strong:rgba(255,255,255,.16);
+  --card:rgba(255,255,255,.025);
+  --glass:rgba(255,255,255,.04);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  overflow-x:hidden;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  cursor:default;
+}
+::selection{background:var(--accent);color:#000}
+
+/* ============ BACKDROP ============ */
+.backdrop{
+  position:fixed;inset:0;z-index:-3;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(255,91,31,.15), transparent 45%),
+    radial-gradient(circle at 85% 25%, rgba(124,92,255,.12), transparent 50%),
+    radial-gradient(circle at 50% 90%, rgba(34,211,238,.08), transparent 55%),
+    var(--bg);
+}
+.noise{
+  position:fixed;inset:0;z-index:-2;pointer-events:none;
+  opacity:.06;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.grid-overlay{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse at center, black 30%, transparent 85%);
+  opacity:.5;
+}
+.scan{
+  position:fixed;left:0;right:0;top:0;height:2px;z-index:0;pointer-events:none;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  filter:blur(.5px);opacity:.6;
+  animation:scan 9s linear infinite;
+}
+@keyframes scan{
+  0%{transform:translateY(0)}
+  100%{transform:translateY(100vh)}
+}
+
+/* ============ TOP NAV ============ */
+nav.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:60;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 36px;
+  backdrop-filter:blur(20px);
+  background:rgba(6,6,10,.65);
+  border-bottom:1px solid var(--line);
+}
+.brand{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;font-size:14px;letter-spacing:.04em;text-transform:uppercase;
+  display:flex;align-items:center;gap:12px;
+}
+.brand .dot{
+  width:10px;height:10px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  box-shadow:0 0 16px var(--accent);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{transform:scale(1);opacity:1}
+  50%{transform:scale(1.3);opacity:.7}
+}
+.nav-meta{
+  display:flex;align-items:center;gap:24px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:.15em;color:var(--ink-dim);text-transform:uppercase;
+}
+.nav-meta span b{color:var(--accent);font-weight:500}
+.live-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--danger);
+  display:inline-block;margin-right:6px;
+  animation:pulse 1.4s infinite;
+}
+
+/* ============ HERO ============ */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:120px 60px 80px;
+  position:relative;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;font-weight:500;letter-spacing:.3em;
+  color:var(--accent);text-transform:uppercase;
+  padding:8px 16px;border:1px solid rgba(255,91,31,.35);
+  border-radius:4px;background:rgba(255,91,31,.06);
+  width:fit-content;margin-bottom:36px;
+}
+.hero-tag::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 12px var(--accent);
+}
+.hero h1{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(56px,11vw,180px);
+  font-weight:700;line-height:.88;letter-spacing:-.045em;
+  margin-bottom:28px;
+}
+.hero h1 .l1{display:block;color:var(--ink)}
+.hero h1 .l2{
+  display:block;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 45%,var(--accent-3) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  font-style:italic;font-weight:500;
+}
+.hero-sub{
+  font-size:clamp(16px,1.4vw,20px);
+  color:var(--ink-soft);max-width:720px;
+  margin-bottom:50px;line-height:1.6;
+}
+.hero-meta{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--line);border:1px solid var(--line);
+  margin-top:auto;
+}
+@media(max-width:900px){.hero-meta{grid-template-columns:repeat(2,1fr)}}
+.meta-cell{
+  background:var(--bg);padding:24px 20px;
+}
+.meta-cell .num{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:34px;font-weight:700;line-height:1;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.meta-cell .lbl{
+  margin-top:8px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-dim);
+}
+
+/* Hero canvas particles */
+#hero-canvas{
+  position:absolute;inset:0;z-index:-1;pointer-events:none;
+}
+
+/* ============ SECTIONS ============ */
+section{padding:120px 60px;position:relative}
+.section-head{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:40px;
+  margin-bottom:60px;
+}
+.section-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;font-weight:500;letter-spacing:.35em;
+  color:var(--accent);text-transform:uppercase;
+  margin-bottom:18px;
+  display:flex;align-items:center;gap:12px;
+}
+.section-num::before{
+  content:'';width:36px;height:1px;background:var(--accent);
+}
+h2.section-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(40px,6vw,96px);
+  font-weight:700;line-height:.9;letter-spacing:-.035em;
+  margin-bottom:24px;
+}
+h2.section-title .it{font-style:italic;font-weight:400;color:var(--accent)}
+.section-lede{
+  font-size:18px;color:var(--ink-soft);max-width:680px;line-height:1.6;
+}
+
+/* ============ DIVIDER ============ */
+.divider{
+  height:1px;background:linear-gradient(90deg,transparent,var(--line-strong),transparent);
+  margin:0 60px;
+}
+
+/* ============ INTRO ============ */
+.intro-block{
+  display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:center;
+}
+@media(max-width:980px){.intro-block{grid-template-columns:1fr}}
+.intro-lead{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(28px,3.4vw,46px);font-weight:500;line-height:1.15;letter-spacing:-.02em;
+}
+.intro-lead .hl{
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  font-style:italic;font-weight:400;
+}
+.intro-points{
+  display:flex;flex-direction:column;gap:18px;
+}
+.ip{
+  display:flex;gap:18px;padding:20px 22px;
+  background:var(--card);border:1px solid var(--line);border-radius:12px;
+  transition:all .3s ease;
+}
+.ip:hover{border-color:rgba(255,91,31,.4);background:rgba(255,91,31,.04)}
+.ip-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;color:var(--accent);font-weight:600;letter-spacing:.1em;
+  min-width:32px;
+}
+.ip-txt{font-size:15px;color:var(--ink-soft)}
+.ip-txt b{color:var(--ink);font-weight:600}
+
+/* ============ PART HEADER ============ */
+.part-marker{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:.4em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:12px;
+  display:flex;align-items:center;gap:14px;
+}
+.part-marker .bar{
+  display:inline-block;width:48px;height:2px;
+  background:linear-gradient(90deg,var(--accent),transparent);
+}
+.part-mega{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(50px,8vw,128px);font-weight:700;line-height:.86;letter-spacing:-.045em;
+  margin-bottom:30px;
+}
+.part-mega .accent{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  font-style:italic;font-weight:500;
+}
+
+/* ============ CAROTTE VISUAL ============ */
+.carotte-stage{
+  position:relative;margin:60px 0 80px;
+  border:1px solid var(--line-strong);border-radius:24px;overflow:hidden;
+  background:
+    radial-gradient(circle at 80% 50%, rgba(255,91,31,.12), transparent 60%),
+    linear-gradient(180deg,rgba(255,255,255,.02),rgba(0,0,0,.4));
+  padding:60px;min-height:520px;
+}
+.carotte-stage::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size:32px 32px;
+}
+.runner-track{
+  position:relative;height:140px;
+  display:flex;align-items:center;
+}
+.runner{
+  position:absolute;left:0;
+  font-size:46px;
+  filter:drop-shadow(0 0 24px rgba(255,91,31,.6));
+}
+.carrot{
+  position:absolute;right:8%;
+  font-size:54px;
+  filter:drop-shadow(0 0 30px rgba(255,177,44,.7));
+  animation:bob 2.4s ease-in-out infinite;
+}
+@keyframes bob{
+  0%,100%{transform:translateY(0) rotate(-8deg)}
+  50%{transform:translateY(-10px) rotate(8deg)}
+}
+.dash-line{
+  position:absolute;left:80px;right:18%;top:50%;
+  height:2px;
+  background-image:linear-gradient(90deg,var(--accent) 50%,transparent 50%);
+  background-size:16px 2px;
+  opacity:.5;
+}
+.carotte-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--line-strong);
+  margin-top:50px;
+}
+.cell{
+  background:var(--bg-2);padding:28px;position:relative;
+}
+.cell-icon{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:.25em;color:var(--accent);
+  margin-bottom:14px;display:flex;align-items:center;gap:10px;
+}
+.cell-icon::before{
+  content:'';width:8px;height:8px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 10px var(--accent);
+}
+.cell h4{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:22px;font-weight:600;margin-bottom:10px;letter-spacing:-.01em;
+}
+.cell p{font-size:14px;color:var(--ink-soft);line-height:1.55}
+
+/* ============ MECHANISM RAIL ============ */
+.mech-rail{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  border:1px solid var(--line);border-radius:18px;overflow:hidden;
+  margin:40px 0;
+}
+@media(max-width:980px){.mech-rail{grid-template-columns:repeat(2,1fr)}}
+.mech-step{
+  padding:30px 26px;border-right:1px solid var(--line);
+  position:relative;background:var(--card);
+  transition:all .35s ease;
+}
+.mech-step:last-child{border-right:none}
+.mech-step:hover{background:rgba(255,91,31,.05)}
+.mech-step .step-no{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;
+  color:var(--ink-dim);margin-bottom:14px;
+}
+.mech-step .step-tit{
+  font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;
+  margin-bottom:8px;
+}
+.mech-step .step-tit .em{color:var(--accent)}
+.mech-step .step-txt{font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+.mech-step .step-arrow{
+  position:absolute;right:-8px;top:50%;transform:translateY(-50%);
+  width:16px;height:16px;border-right:1px solid var(--accent);border-top:1px solid var(--accent);
+  transform-origin:center;
+  transform:translateY(-50%) rotate(45deg);
+  opacity:.4;
+}
+.mech-step:last-child .step-arrow{display:none}
+
+/* ============ EDGE BLOCK ============ */
+.edge-block{
+  display:grid;grid-template-columns:1fr 1.2fr;gap:60px;
+  align-items:center;margin-top:80px;
+  padding:50px;border:1px solid rgba(255,91,31,.3);border-radius:24px;
+  background:linear-gradient(135deg,rgba(255,91,31,.08),rgba(124,92,255,.04));
+  position:relative;overflow:hidden;
+}
+@media(max-width:980px){.edge-block{grid-template-columns:1fr}}
+.edge-block::before{
+  content:'';position:absolute;top:-50%;right:-30%;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,91,31,.15),transparent 60%);
+  pointer-events:none;
+}
+.edge-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:var(--accent);
+  margin-bottom:18px;
+}
+.edge-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(34px,4vw,56px);font-weight:600;line-height:1;letter-spacing:-.02em;
+  margin-bottom:20px;
+}
+.edge-title .it{font-style:italic;color:var(--accent-2)}
+.edge-points{display:flex;flex-direction:column;gap:14px}
+.edge-pt{
+  display:flex;gap:14px;align-items:flex-start;
+  font-size:15px;color:var(--ink);
+}
+.edge-pt::before{
+  content:'›';color:var(--accent);font-size:20px;line-height:1;font-weight:700;
+  flex-shrink:0;
+}
+.edge-pt b{color:var(--accent-2);font-weight:600}
+
+/* ============ STORY TEASER ============ */
+.story-teaser{
+  margin-top:100px;
+  border:1px solid var(--line-strong);border-radius:24px;overflow:hidden;
+  background:#03030a;
+  position:relative;
+}
+.story-teaser::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,91,31,.08), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(124,92,255,.08), transparent 50%);
+  pointer-events:none;
+}
+.story-head{
+  padding:30px 40px;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(0,0,0,.4);position:relative;
+}
+.story-head .tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:.3em;color:var(--accent);text-transform:uppercase;
+  display:flex;align-items:center;gap:10px;
+}
+.story-head .tag::before{
+  content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 10px var(--accent);
+}
+.story-head .when{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-dim);
+  letter-spacing:.2em;
+}
+.story-body{
+  padding:60px 40px;position:relative;
+}
+.story-headline{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(40px,5.5vw,80px);font-weight:700;line-height:.94;letter-spacing:-.035em;
+  margin-bottom:40px;text-align:center;
+}
+.story-headline .em{
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  font-style:italic;font-weight:500;
+}
+.story-elements{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:1px;
+  background:var(--line-strong);margin:0 -40px -60px;
+}
+.story-el{
+  background:#030308;padding:50px 40px;
+  display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;
+  position:relative;
+}
+.story-el .big{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(72px,9vw,140px);font-weight:700;line-height:1;letter-spacing:-.04em;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.story-el .lbl{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-soft);
+}
+
+/* ============ PART 2 SPECIFIC ============ */
+.bottle-stage{
+  position:relative;margin:60px 0;
+  padding:80px 50px;
+  border:1px solid var(--line-strong);border-radius:24px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(124,92,255,.15), transparent 60%),
+    radial-gradient(ellipse at 50% 100%, rgba(34,211,238,.08), transparent 60%),
+    #04040b;
+  overflow:hidden;
+}
+.bottle-stage::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size:1px 24px;
+}
+.bottle-wrap{
+  display:flex;justify-content:center;align-items:center;
+  height:380px;position:relative;
+}
+.bottle{
+  position:relative;width:160px;height:300px;
+}
+.bottle-svg{
+  width:100%;height:100%;
+  filter:drop-shadow(0 0 30px rgba(124,92,255,.4));
+}
+.bottle-fill{
+  transform-origin:center bottom;
+  animation:fill 5s ease-in-out infinite;
+}
+@keyframes fill{
+  0%,15%{transform:scaleY(0.05);opacity:.5}
+  85%,100%{transform:scaleY(0.9);opacity:1}
+}
+.drop{
+  position:absolute;top:-10px;left:50%;transform:translateX(-50%);
+  width:4px;height:14px;border-radius:50%;
+  background:linear-gradient(180deg,var(--accent-3),var(--accent-4));
+  box-shadow:0 0 10px var(--accent-3);
+  animation:drop 1.6s ease-in infinite;
+}
+.drop:nth-child(2){animation-delay:.5s;left:48%}
+.drop:nth-child(3){animation-delay:1s;left:52%}
+@keyframes drop{
+  0%{top:-10px;opacity:1}
+  80%{top:calc(50% - 20px);opacity:1}
+  100%{top:50%;opacity:0}
+}
+
+/* Flow chain : Action → Rythme → Vibration → Résultat */
+.flow-chain{
+  display:grid;grid-template-columns:repeat(4,1fr) ;gap:14px;
+  margin:60px 0;
+}
+@media(max-width:980px){.flow-chain{grid-template-columns:1fr 1fr}}
+.flow-node{
+  position:relative;padding:36px 26px;
+  border:1px solid var(--line-strong);border-radius:18px;
+  background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(0,0,0,.4));
+  text-align:left;
+  transition:all .4s ease;
+  overflow:hidden;
+}
+.flow-node:hover{
+  border-color:var(--accent-3);
+  transform:translateY(-4px);
+  background:linear-gradient(180deg,rgba(124,92,255,.08),rgba(0,0,0,.5));
+}
+.flow-node::after{
+  content:'→';
+  position:absolute;right:-22px;top:50%;transform:translateY(-50%);
+  font-size:24px;color:var(--accent);font-weight:300;
+  z-index:2;
+}
+.flow-node:last-child::after{display:none}
+@media(max-width:980px){.flow-node::after{display:none}}
+.flow-node .stage{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:.25em;color:var(--ink-dim);
+  margin-bottom:18px;
+}
+.flow-node .nm{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:28px;font-weight:700;letter-spacing:-.02em;
+  margin-bottom:10px;
+}
+.flow-node:nth-child(1) .nm{color:var(--accent)}
+.flow-node:nth-child(2) .nm{color:var(--accent-2)}
+.flow-node:nth-child(3) .nm{color:var(--accent-3)}
+.flow-node:nth-child(4) .nm{color:var(--accent-4)}
+.flow-node .desc{font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+
+/* Waveform vibration visual */
+.wave-strip{
+  height:80px;width:100%;margin:30px 0;
+  position:relative;overflow:hidden;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.wave-strip svg{width:200%;height:100%}
+.wave-path{
+  stroke:var(--accent-3);stroke-width:1.5;fill:none;
+  animation:wavemove 6s linear infinite;
+}
+@keyframes wavemove{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+
+/* ============ TRUTHS panel ============ */
+.truths{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--line-strong);
+  border:1px solid var(--line-strong);border-radius:18px;overflow:hidden;
+  margin-top:40px;
+}
+@media(max-width:980px){.truths{grid-template-columns:1fr}}
+.truth{
+  background:#04040b;padding:36px 28px;
+}
+.truth .qmark{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:48px;font-weight:700;color:var(--accent-3);line-height:1;
+  margin-bottom:14px;font-style:italic;
+}
+.truth h4{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:22px;font-weight:600;margin-bottom:10px;letter-spacing:-.015em;
+}
+.truth p{font-size:14px;color:var(--ink-soft);line-height:1.55}
+
+/* ============ FOOTER / CLOSE ============ */
+.close-section{
+  padding:140px 60px 100px;text-align:center;position:relative;
+}
+.close-section .mark{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:.4em;color:var(--accent);margin-bottom:30px;
+}
+.close-section h2{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(48px,7vw,108px);font-weight:700;letter-spacing:-.04em;line-height:.92;
+  max-width:1100px;margin:0 auto 40px;
+}
+.close-section h2 .em{
+  background:linear-gradient(135deg,var(--accent),var(--accent-2),var(--accent-3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  font-style:italic;font-weight:500;
+}
+.close-section p.tag{
+  font-size:18px;color:var(--ink-soft);max-width:620px;margin:0 auto;
+}
+.bottom-rail{
+  padding:30px 60px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  letter-spacing:.2em;color:var(--ink-dim);text-transform:uppercase;
+}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* responsive nav hide on small */
+@media(max-width:760px){
+  .nav-meta span:not(:last-child){display:none}
+  section{padding:90px 24px}
+  .hero{padding:120px 24px 60px}
+  .carotte-stage{padding:30px 22px}
+  .story-body{padding:40px 24px}
+  .story-elements{margin:0 -24px -40px;grid-template-columns:1fr}
+  .edge-block{padding:30px 24px}
+  .close-section{padding:90px 24px}
+}
+</style>
+</head>
+<body>
+
+<div class="backdrop"></div>
+<div class="noise"></div>
+<div class="grid-overlay"></div>
+<div class="scan"></div>
+
+<!-- ============ NAV ============ -->
+<nav class="topbar">
+  <div class="brand"><span class="dot"></span> KRAVE / FORMATION</div>
+  <div class="nav-meta">
+    <span>MODULE <b>02</b></span>
+    <span>DURATION <b>~25 MIN</b></span>
+    <span><span class="live-dot"></span>SESSION LIVE</span>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-tag">FORMATION — TRAINING ROOM 02</div>
+  <h1>
+    <span class="l1">LE PARADOXE</span>
+    <span class="l2">du Challenge.</span>
+  </h1>
+  <p class="hero-sub">
+    Pourquoi les meilleurs n'attendent pas la motivation pour se mettre en mouvement.
+    Deux paradoxes, deux mécanismes que tu peux activer à volonté — sur toi, sur ton équipe, sur ton business.
+  </p>
+  <div class="hero-meta">
+    <div class="meta-cell"><div class="num">02</div><div class="lbl">Paradoxes</div></div>
+    <div class="meta-cell"><div class="num">04</div><div class="lbl">Mécanismes</div></div>
+    <div class="meta-cell"><div class="num">02</div><div class="lbl">Histoires</div></div>
+    <div class="meta-cell"><div class="num">100%</div><div class="lbl">Activable</div></div>
+  </div>
+</header>
+
+<div class="divider"></div>
+
+<!-- ============ INTRO ============ -->
+<section>
+  <div class="section-head reveal">
+    <div>
+      <div class="section-num">00 · Introduction</div>
+      <h2 class="section-title">Le challenge<br><span class="it">n'est pas un jeu d'ego.</span></h2>
+    </div>
+  </div>
+
+  <div class="intro-block">
+    <p class="intro-lead reveal">
+      Un challenge, ce n'est pas un trophée à accrocher. <span class="hl">C'est un levier biologique.</span> Une manière propre d'aller chercher dans l'humain ce qu'aucun discours ne peut activer : <span class="hl">l'urgence,</span> le focus, l'engagement total — pendant une fenêtre courte.
+    </p>
+    <div class="intro-points">
+      <div class="ip reveal"><div class="ip-num">01</div><div class="ip-txt"><b>L'humain réagit au court terme.</b> Pas au plan à 12 mois. Au prix qu'il peut toucher cette semaine.</div></div>
+      <div class="ip reveal"><div class="ip-num">02</div><div class="ip-txt"><b>L'humain a besoin de stimulus.</b> Sans tension, pas de mouvement. Le challenge fabrique la tension.</div></div>
+      <div class="ip reveal"><div class="ip-num">03</div><div class="ip-txt"><b>Le challenge a un edge.</b> Il transforme un objectif lointain en récompense palpable — et débloque un état que tu ne peux pas atteindre autrement.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============ PART 1 : LA CAROTTE ============ -->
+<section id="part1">
+  <div class="reveal">
+    <div class="part-marker"><span class="bar"></span> PARTIE 01 — PARADOXE N°1</div>
+    <h2 class="part-mega">Le Paradoxe<br>de la <span class="accent">Carotte.</span></h2>
+    <p class="section-lede">
+      Plus la récompense est <b style="color:var(--ink)">proche</b>, palpable et limitée dans le temps,
+      plus l'humain mobilise une énergie qu'il était <i>incapable</i> de fournir une heure plus tôt.
+      Ce n'est pas rationnel. C'est neurologique.
+    </p>
+  </div>
+
+  <!-- Visual stage -->
+  <div class="carotte-stage reveal">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--ink-dim);margin-bottom:18px">PROTOCOLE / VISUEL</div>
+    <div class="runner-track">
+      <div class="dash-line"></div>
+      <div class="runner" id="runner">🏃</div>
+      <div class="carrot">🥕</div>
+    </div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,2.6vw,32px);font-weight:500;line-height:1.2;margin-top:20px;letter-spacing:-.015em">
+      Met une <span style="color:var(--accent)">carotte visible</span> devant un humain, donne-lui une <span style="color:var(--accent-2)">deadline courte</span> — il deviendra <i style="color:var(--accent)">une autre version de lui-même.</i>
+    </div>
+
+    <div class="carotte-grid">
+      <div class="cell">
+        <div class="cell-icon">PROXIMITÉ</div>
+        <h4>Court terme &gt; long terme</h4>
+        <p>Le cerveau dévalue tout ce qui est lointain. Une prime cette semaine bat un bonus annuel. Toujours.</p>
+      </div>
+      <div class="cell">
+        <div class="cell-icon">RARETÉ</div>
+        <h4>Le privilège</h4>
+        <p>Ce n'est pas le cash qui motive — c'est le statut. Le fait qu'<i>une</i> personne va gagner, pas tout le monde.</p>
+      </div>
+      <div class="cell">
+        <div class="cell-icon">VISIBILITÉ</div>
+        <h4>La carotte doit être vue</h4>
+        <p>Pas un concept abstrait. Une image, un montant, une scène, un objet qu'on peut se projeter en train de tenir.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mécanisme rail -->
+  <div class="reveal" style="margin-top:80px">
+    <div class="section-num">01.B · Mécanisme</div>
+    <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,3.4vw,46px);font-weight:600;letter-spacing:-.02em;margin-bottom:8px">
+      Pourquoi ça marche — la chaîne.
+    </h3>
+    <p style="color:var(--ink-soft);max-width:680px;margin-bottom:30px">
+      Ce qu'il se passe vraiment dans le cerveau quand tu actives une carotte court-terme.
+    </p>
+    <div class="mech-rail">
+      <div class="mech-step">
+        <div class="step-no">STEP 01</div>
+        <div class="step-tit"><span class="em">Stimulus.</span></div>
+        <div class="step-txt">Tu poses le prix. Tu poses la deadline. Tu rends la cible visible et touchable.</div>
+        <div class="step-arrow"></div>
+      </div>
+      <div class="mech-step">
+        <div class="step-no">STEP 02</div>
+        <div class="step-tit"><span class="em">Dopamine.</span></div>
+        <div class="step-txt">Le cerveau anticipe la récompense. Le système nerveux se met en mode "chasse".</div>
+        <div class="step-arrow"></div>
+      </div>
+      <div class="mech-step">
+        <div class="step-no">STEP 03</div>
+        <div class="step-tit"><span class="em">Focus.</span></div>
+        <div class="step-txt">Le bruit autour disparaît. Toute l'énergie converge vers une seule cible mesurable.</div>
+        <div class="step-arrow"></div>
+      </div>
+      <div class="mech-step">
+        <div class="step-no">STEP 04</div>
+        <div class="step-tit"><span class="em">Performance.</span></div>
+        <div class="step-txt">L'individu fait en 5 jours ce qu'il n'aurait pas fait en 5 semaines. Sans la carotte, ce delta n'existe pas.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edge -->
+  <div class="edge-block reveal">
+    <div>
+      <div class="edge-label">L'EDGE À UTILISER</div>
+      <div class="edge-title">Le challenge<br><span class="it">est un outil.</span></div>
+      <p style="color:var(--ink-soft);font-size:15.5px">
+        Ce n'est pas une question de fierté. C'est un protocole pour activer un état que personne ne peut tenir longtemps — mais que tout le monde peut tenir le temps d'un sprint.
+      </p>
+    </div>
+    <div class="edge-points">
+      <div class="edge-pt">Fais en <b>fenêtre courte</b> — 7 jours, 14 jours, jamais 90.</div>
+      <div class="edge-pt">Rends la <b>carotte visible</b> — image, photo, montant, scène.</div>
+      <div class="edge-pt">Crée la <b>rareté</b> — un gagnant, pas dix.</div>
+      <div class="edge-pt">Communique <b>chaque jour</b> les positions. Le classement nourrit la dopamine.</div>
+      <div class="edge-pt">Tu ne cherches pas l'effort moyen — tu cherches <b>le pic.</b></div>
+    </div>
+  </div>
+
+  <!-- Story teaser (just 2 visual elements - storyteller has full script) -->
+  <div class="story-teaser reveal">
+    <div class="story-head">
+      <div class="tag">CASE STUDY — HISTOIRE 01</div>
+      <div class="when">NEW YORK → PARIS · 1919–1927</div>
+    </div>
+    <div class="story-body">
+      <div class="story-headline">
+        Quand <span class="em">une seule carotte</span> a déclenché<br>la course aérienne du siècle.
+      </div>
+      <div class="story-elements">
+        <div class="story-el">
+          <div class="big">$25,000</div>
+          <div class="lbl">La carotte posée par Raymond Orteig</div>
+        </div>
+        <div class="story-el">
+          <div class="big">33H 30</div>
+          <div class="lbl">Lindbergh · seul · sans sommeil</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============ PART 2 : BOUTEILLE VIDE ============ -->
+<section id="part2">
+  <div class="reveal">
+    <div class="part-marker"><span class="bar"></span> PARTIE 02 — PARADOXE N°2</div>
+    <h2 class="part-mega">Le Paradoxe<br>de la <span class="accent">Bouteille Vide.</span></h2>
+    <p class="section-lede">
+      Quand <b style="color:var(--ink)">l'excitation du départ</b> est tombée.
+      Quand l'énergie n'est plus là pour repartir.
+      Tu n'as pas besoin d'inspiration — tu as besoin de te <i>raccrocher à un mouvement</i>.
+      Le challenge devient une <b style="color:var(--ink)">porte ouverte sur la performance</b>.
+    </p>
+  </div>
+
+  <!-- Bottle visual -->
+  <div class="bottle-stage reveal">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:var(--ink-dim);margin-bottom:18px">PROTOCOLE / VISUEL</div>
+    <div class="bottle-wrap">
+      <div class="bottle">
+        <svg class="bottle-svg" viewBox="0 0 160 300">
+          <defs>
+            <linearGradient id="fillGrad" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#7c5cff" stop-opacity=".9"/>
+              <stop offset="100%" stop-color="#22d3ee" stop-opacity=".7"/>
+            </linearGradient>
+          </defs>
+          <!-- bottle outline -->
+          <path d="M 65 10 L 95 10 L 95 50 Q 95 60 105 70 L 125 100 Q 135 115 135 135 L 135 270 Q 135 290 115 290 L 45 290 Q 25 290 25 270 L 25 135 Q 25 115 35 100 L 55 70 Q 65 60 65 50 Z"
+                fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+          <!-- liquid -->
+          <g class="bottle-fill">
+            <path d="M 30 290 L 130 290 L 130 140 L 30 140 Z" fill="url(#fillGrad)"/>
+          </g>
+          <!-- highlight -->
+          <path d="M 45 100 L 45 270" stroke="rgba(255,255,255,.18)" stroke-width="2"/>
+        </svg>
+        <div class="drop"></div>
+        <div class="drop"></div>
+        <div class="drop"></div>
+      </div>
+    </div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,2.6vw,32px);font-weight:500;line-height:1.25;text-align:center;letter-spacing:-.015em;max-width:780px;margin:30px auto 0">
+      Tu ne remplis pas la bouteille avec de la <i style="color:var(--ink-dim)">motivation</i>.<br>
+      Tu la remplis avec de <span style="color:var(--accent-3)">l'action</span>. Une goutte, puis une autre, puis une autre.
+    </div>
+  </div>
+
+  <!-- Flow chain -->
+  <div class="reveal" style="margin-top:60px">
+    <div class="section-num">02.B · Loi du Mouvement</div>
+    <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,3.4vw,46px);font-weight:600;letter-spacing:-.02em;margin-bottom:8px">
+      La séquence sacrée.
+    </h3>
+    <p style="color:var(--ink-soft);max-width:680px;margin-bottom:36px">
+      Le principe qui te sort d'une bouteille vide à chaque fois. Toujours dans cet ordre — jamais dans un autre.
+    </p>
+
+    <div class="flow-chain">
+      <div class="flow-node">
+        <div class="stage">PHASE 01</div>
+        <div class="nm">L'Action.</div>
+        <div class="desc">Tu ne ressens rien. Tu agis quand même. Petit. Pas parfait. Maintenant.</div>
+      </div>
+      <div class="flow-node">
+        <div class="stage">PHASE 02</div>
+        <div class="nm">Le Rythme.</div>
+        <div class="desc">L'action répétée crée une cadence. La cadence efface le besoin de décider à chaque fois.</div>
+      </div>
+      <div class="flow-node">
+        <div class="stage">PHASE 03</div>
+        <div class="nm">La Vibration.</div>
+        <div class="desc">L'énergie revient. Pas avant. Le rythme génère l'état — l'état n'est pas un préalable.</div>
+      </div>
+      <div class="flow-node">
+        <div class="stage">PHASE 04</div>
+        <div class="nm">Le Résultat.</div>
+        <div class="desc">La vibration attire le mouvement. Les choses se mettent à bouger autour de toi sans forcer.</div>
+      </div>
+    </div>
+
+    <!-- Waveform -->
+    <div class="wave-strip">
+      <svg viewBox="0 0 1200 80" preserveAspectRatio="none">
+        <path class="wave-path" d="M0,40 Q60,5 120,40 T240,40 T360,40 T480,40 T600,40 T720,40 T840,40 T960,40 T1080,40 T1200,40 T1320,40 T1440,40 T1560,40 T1680,40 T1800,40 T1920,40 T2040,40 T2160,40 T2280,40 T2400,40"/>
+        <path class="wave-path" d="M0,40 Q60,75 120,40 T240,40 T360,40 T480,40 T600,40 T720,40 T840,40 T960,40 T1080,40 T1200,40 T1320,40 T1440,40 T1560,40 T1680,40 T1800,40 T1920,40 T2040,40 T2160,40 T2280,40 T2400,40" style="opacity:.4;stroke:var(--accent-4)"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Truths -->
+  <div class="reveal" style="margin-top:80px">
+    <div class="section-num">02.C · Vérités opérationnelles</div>
+    <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,3.4vw,46px);font-weight:600;letter-spacing:-.02em;margin-bottom:30px">
+      Ce que tu fais <i style="color:var(--accent-3)">quand la bouteille est vide.</i>
+    </h3>
+    <div class="truths">
+      <div class="truth">
+        <div class="qmark">01</div>
+        <h4>Ne cherche pas l'humeur.</h4>
+        <p>L'humeur arrive après l'action. Pas avant. Si tu attends d'avoir envie, tu vas attendre des semaines.</p>
+      </div>
+      <div class="truth">
+        <div class="qmark">02</div>
+        <h4>Réduis le ticket d'entrée.</h4>
+        <p>Pas une journée. Pas une heure. <b style="color:var(--ink)">Trois minutes.</b> L'action minimale viable qui te remet en mouvement.</p>
+      </div>
+      <div class="truth">
+        <div class="qmark">03</div>
+        <h4>Trouve un challenge à enclencher.</h4>
+        <p>Un cadre. Une deadline. Une chaîne à ne pas casser. Le challenge force le rythme — et le rythme te ramène la vibration.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Story teaser 2 -->
+  <div class="story-teaser reveal">
+    <div class="story-head">
+      <div class="tag">CASE STUDY — HISTOIRE 02</div>
+      <div class="when">NEW YORK · STAND-UP · ANNÉES 90</div>
+    </div>
+    <div class="story-body">
+      <div class="story-headline">
+        Le <span class="em">marqueur rouge</span> qui a fabriqué<br>le meilleur comique de sa génération.
+      </div>
+      <div class="story-elements">
+        <div class="story-el">
+          <div class="big">1 X</div>
+          <div class="lbl">Une croix par jour, sur un calendrier mural</div>
+        </div>
+        <div class="story-el">
+          <div class="big">∞</div>
+          <div class="lbl">"Don't break the chain"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============ CLOSE ============ -->
+<section class="close-section">
+  <div class="mark reveal">SYNTHÈSE / EXIT</div>
+  <h2 class="reveal">
+    Tu ne <i>subis</i> pas le challenge.<br>
+    <span class="em">Tu le déclenches.</span>
+  </h2>
+  <p class="tag reveal">
+    La carotte allume la machine. Le rythme la fait tourner. Entre les deux — c'est toi qui choisis.
+  </p>
+</section>
+
+<div class="bottom-rail">
+  <span>KRAVE / FORMATION · MODULE 02</span>
+  <span>LE PARADOXE DU CHALLENGE</span>
+  <span>END · 02 / 02</span>
+</div>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ===== Reveal ===== */
+const reveals = document.querySelectorAll('.reveal');
+reveals.forEach(el=>{
+  ScrollTrigger.create({
+    trigger:el,start:'top 88%',
+    onEnter:()=>el.classList.add('in')
+  });
+});
+
+/* ===== Runner animation tied to scroll ===== */
+const runner = document.getElementById('runner');
+if(runner){
+  ScrollTrigger.create({
+    trigger:'.carotte-stage',
+    start:'top 70%',end:'bottom 30%',
+    scrub:1,
+    animation: gsap.to(runner, { left:'78%', ease:'none' })
+  });
+}
+
+/* ===== Hero canvas particles ===== */
+(function(){
+  const c = document.getElementById('hero-canvas');
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  let W,H,particles;
+  function size(){
+    W = c.width = c.offsetWidth * devicePixelRatio;
+    H = c.height = c.offsetHeight * devicePixelRatio;
+  }
+  function init(){
+    size();
+    particles = Array.from({length:60},()=>({
+      x:Math.random()*W,y:Math.random()*H,
+      vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,
+      r:Math.random()*1.5+.4
+    }));
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='rgba(255,91,31,.6)';
+    particles.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+    });
+    // connect close particles
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const a=particles[i],b=particles[j];
+        const d=Math.hypot(a.x-b.x,a.y-b.y);
+        if(d<120*devicePixelRatio){
+          ctx.strokeStyle=`rgba(255,91,31,${.12*(1-d/(120*devicePixelRatio))})`;
+          ctx.lineWidth=1;
+          ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',init);
+  init();draw();
+})();
+
+/* ===== Hero title subtle parallax ===== */
+gsap.to('.hero h1', {
+  yPercent:-15,
+  ease:'none',
+  scrollTrigger:{
+    trigger:'.hero',start:'top top',end:'bottom top',scrub:true
+  }
+});
+
+/* ===== Flow nodes stagger on scroll ===== */
+gsap.from('.flow-node',{
+  opacity:0,y:40,duration:.7,stagger:.12,ease:'power2.out',
+  scrollTrigger:{trigger:'.flow-chain',start:'top 78%'}
+});
+
+/* ===== Mech rail stagger ===== */
+gsap.from('.mech-step',{
+  opacity:0,x:30,duration:.6,stagger:.1,ease:'power2.out',
+  scrollTrigger:{trigger:'.mech-rail',start:'top 80%'}
+});
+
+/* ===== Story elements pop ===== */
+gsap.utils.toArray('.story-el .big').forEach(el=>{
+  gsap.from(el,{
+    scale:.6,opacity:0,duration:1,ease:'expo.out',
+    scrollTrigger:{trigger:el,start:'top 85%'}
+  });
+});
+</script>
+</body>
+</html>
